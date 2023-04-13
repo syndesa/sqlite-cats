@@ -11,7 +11,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 
 # If user is logged in redirect to /trade/btc else redirect to /home
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     if current_user.is_authenticated:
