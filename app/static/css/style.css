@@ -1,0 +1,227 @@
+body {
+    background: #2f3343 url(../images/background.png);
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    color: #333333;
+    font-family: sans-serif;
+    overflow: hidden;
+  }
+
+
+  .alerts {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    left:25%;
+    right: 0;
+    top: 6%;
+    width: 50vw;
+  }
+
+ .closebtn:hover {
+  filter: invert(0) sepia(0) saturate(0) hue-rotate(0deg);
+}
+  
+  .table td, .table th {
+    vertical-align: baseline;
+    border-top: 1px solid #dee2e6;
+}
+
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #3b8cdf;
+}
+
+
+.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: #3b8cdf;
+    border-color: #4e555b;
+}
+
+.btn {
+  white-space: nowrap;
+}
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #444444;
+  }
+  
+  .bg-steel {
+    padding: 0;
+  }
+  
+  .site-header .navbar-nav .nav-link {
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: transform 250ms;
+  }
+  
+  .site-header .navbar-nav .nav-link:hover {
+    color: #4a4e63;
+    transform: translateY(-3px);
+  }
+  
+  #logo{
+    
+    transition: transform 250ms;
+  }
+
+  #logo:hover{
+    color: #ffffff;
+    transform: translateY(-3px);
+  }
+
+  .site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+  }
+  
+  .navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover {
+    color:#00d8ff;
+}
+
+  .modal-backdrop {
+    z-index: 2;
+  }
+
+  .content-section {
+    margin: auto;
+    margin-top: 12vh;
+    width: 50vw;
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+
+  }
+
+
+  .home-page {
+    display: grid;
+    justify-content: center;
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    grid-template-areas: "Typed"
+                         "Login";
+    margin: auto;
+    margin-top: 18vh;
+    width: 50vw;
+    background: transparent;
+    grid-auto-flow: row;
+    padding: 10px 20px;
+  }
+
+  .about-section {
+    justify-content: center;
+    margin: auto;
+    margin-top: 18vh;
+    width: 50vw;
+    background: transparent;
+    padding: 10px 20px;
+  }
+
+
+
+
+
+
+
+
+  .typed {
+    grid-area: Typed;
+    justify-self: center;
+  }
+
+  .typed h1 {
+    width: 100%;
+    color: white;
+    font-size: 3.8vw;
+    white-space: nowrap;
+    font-weight: 600;
+    text-shadow: 0px 4px 3px rgb(0 0 0 / 20%), 0px 8px 13px rgb(0 0 0 / 10%), 0px 18px 23px rgb(0 0 0 / 10%);
+  }
+
+
+  .loginhome {
+    grid-area: Login;
+    width: 45vw;
+    margin-top: 5%;
+  }
+
+.emailg, .passwordg{
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+  
+  #email::placeholder{
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  
+
+
+  #password::placeholder{
+    text-align: center;
+    font-size: 1.2rem;
+
+  }
+
+  .signin{
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr;
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+
+
+  .submitbtn{
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  #submit{
+    width: 100%;
+    background-color: #17a2b8;
+    border-color: #00d8ff;
+    color: white;
+    font-weight: bold;
+  }
+
+  #submit:hover{
+background-color:#00d8ff; 
+  }
+
+
+  small {
+    margin-top: 4px; 
+    text-align: center;
+  }
+
+  .emailg>input, .passwordg>input{
+    text-align: center;
+  }
+
+
+  .helplinks{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 10px;
+  }
+
+
+  .version {
+    color: white;
+    z-index: 10000;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding-right: 15px;
+    margin-bottom: 5px;
+}
+  

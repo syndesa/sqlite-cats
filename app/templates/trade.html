@@ -1,0 +1,251 @@
+<!-- Base Trading UI Template -->
+
+{% extends 'base.html' %}
+
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+crossorigin="anonymous"></script>
+<script type="module" src="{{ url_for('static', filename='javascript/tradeui.js')}}" defer></script>
+<script type="module" src="{{ url_for('static', filename='javascript/tvchart.js')}}" defer></script>
+<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/trade.css')}}">
+{% endblock %}
+
+{% block body %}
+
+<div class="tradecontainer">
+  <div class="timeframe">
+    {% block tf %}{% endblock tf %}
+  </div>
+
+  <div class="symbols">
+    {% block changeassets %}{% endblock changeassets %}
+  </div>
+
+  <div class="chart">
+    <div class="legend"
+      style="position: absolute; left: 12px; top: 12px; z-index: 2; font-size: 18px; font-family: sans-serif; line-height: 18px; font-weight: 300;">
+      <div class="firstrow" style="color: black;">{% block chartlegend %}{% endblock chartlegend %}</div>
+    </div>
+    <img id="loading" src="{{url_for('static', filename='images/catsloading.gif')}}" alt="">
+  </div>
+
+  <div class="leverage">
+    <div class="userassets">
+      <div class="card" style="width: 100%; height: 100%;">
+        <div class="card-body" style="padding-bottom:0;">
+          <h5 class="card-title">My Assets</h5>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Coin</th>
+                <th scope="col">Total</th>
+                <th scope="col">Available</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">USDT</th>
+                <td id="totalassets">{{current_user.assets}}</td>
+                <td id="availableassets">{{current_user.available}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="ordertype">
+      <div class="card" style="width: 100%; height: 100%;">
+        <div class="card-body" style="padding-top: 10px; padding-bottom:10px">
+          <h5 class="card-title">{% block tradingpair %}{% endblock tradingpair %}</h5>
+          <hr>
+          <div id="ordertype" class="btn-group btn-group-toggle" data-toggle="buttons" style="width:100%; ">
+            <label class="btn btn-secondary active" name="limit" id="limit">
+              <input type="radio" name="options" id="option1" autocomplete="off" checked>Limit
+            </label>
+            <label class="btn btn-secondary" name="market" id="market">
+              <input type="radio" name="options" id="option2" autocomplete="off">Market
+            </label>
+            <label class="btn btn-secondary" name="conditional" id="conditional">
+              <input type="radio" name="options" id="option3" autocomplete="off" disabled>Conditional
+            </label>
+          </div>
+
+
+          <div class="input-group mb-3 mt-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-sm">Leverage (1-100x)</span>
+            </div>
+            <input id="leverage" type="number" min="1" max="100" class="form-control" aria-label="Small"
+              aria-describedby="inputGroup-sizing-sm" placeholder="1" value="1">
+          </div>
+
+          <div class="input-group  mb-3 mt-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-sm">Order Price ($)</span>
+            </div>
+            <input id="orderpriceinput" type="number" min="1" class="form-control" aria-label="Small"
+              aria-describedby="inputGroup-sizing-sm">
+          </div>
+
+          <div class="input-group  mb-3 mt-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-sm">Quantity</span>
+            </div>
+            <input id="orderamount" type="number" min="0" class="form-control" aria-label="Small"
+              aria-describedby="inputGroup-sizing-sm">
+          </div>
+
+          <div id="orderpercent" class="btn-group btn-group-sm mr-2 mb-3" role="group" aria-label="First group"
+            style="width: 100%;">
+            <button value=".25" type="button" class="btn btn-secondary">25%</button>
+            <button value=".50" type="button" class="btn btn-secondary">50%</button>
+            <button value=".75" type="button" class="btn btn-secondary">75%</button>
+            <button value="1" type="button" class="btn btn-secondary">100%</button>
+          </div>
+
+          <div class="ordervalue">
+            <p class="card-text ov">Order Value</p>
+            <p id="ordervalue" class="card-text val">?</p>
+          </div>
+
+          <div class="ordercost">
+            <p class="card-text oc">Order Cost</p>
+            <p id="ordercost" class="card-text val">?</p>
+          </div>
+
+          <div class="exec">
+            <button id="long" type="button" class="btn btn-success">Long (1x)</button>
+            <button id="short" type="button" class="btn btn-danger">Short (1x)</button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="position">
+    <div class="card" style="width: 100%; height: 100%;">
+      <div class="card-body" style="padding-top: 10px; padding-bottom:10px">
+
+        <ul style="margin-bottom: 0px;" class="nav nav-pills " id="pills-tab" role="tablist">
+          <li class="nav-item">
+            <a style="padding-top: 2px; padding-bottom:2px; font-weight: bold;" class="nav-link active" id="pills-home-tab"
+              data-toggle="pill" href="#activepositions" role="tab" aria-controls="pills-home"
+              aria-selected="true">Active Positions</a>
+          </li>
+          <li class="nav-item">
+            <a style="padding-top: 2px; padding-bottom:2px; font-weight: bold;" class="nav-link" id="pills-profile-tab" data-toggle="pill"
+              href="#pendingpositions" role="tab" aria-controls="pills-profile" aria-selected="false">Pending
+              Positions</a>
+          </li>
+        </ul>
+
+
+
+        <div class="tab-content" id="pills-tabContent">
+
+          <div class="tab-pane fade show active" id="activepositions" role="tabpanel" aria-labelledby="pills-home-tab">
+
+            <table class="table table-sm overflow-auto" style=" margin-top: 4px; margin-bottom: 0;">
+              <thead>
+                <tr style="font-size: .9rem;">
+                  <th style="padding-left: 16px;" scope="col">Contract</th>
+                  <th scope="col">ID</th>
+                  <th scope="col">Qty</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">Open</th>
+                  <th scope="col">Liq</th>
+                  <th scope="col">P&L</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyactive">
+                {% block activepositions %}
+                {% endblock activepositions %}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tab-pane fade" id="pendingpositions" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <table class="table table-sm overflow-auto" style=" margin-top: 4px; margin-bottom: 0;">
+              <thead>
+                <tr style="font-size: .9rem;">
+                  <th style="padding-left: 16px;" scope="col">Contract</th>
+                  <th scope="col">ID</th>
+                  <th scope="col">Qty</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">Open</th>
+                  <th scope="col">Liq</th>
+                  <th scope="col">P&L</th>
+                </tr>
+              </thead>
+              <tbody id="tbodypending">
+                {% block pendingpositions %}
+                {% endblock pendingpositions %}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div id="currentPrice" hidden></div>
+
+
+
+  <!-- Trade confirmation Modal -->
+  <div class="modal fade " id="tradeconfirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"><strong>Order Summary</strong></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul id="lgconfirm" class="list-group">
+            <li class="list-group-item liconfirm"><strong>Contract</strong>
+              <div class="lival"></div>
+            </li>
+            <li class="list-group-item liconfirm"><strong>Leverage</strong>
+              <div class="lival"></div>
+            </li>
+            <li class="list-group-item liconfirm"><strong>Entry Price</strong>
+              <div class="lival"></div>
+            </li>
+            <li class="list-group-item liconfirm"><strong>Quantity</strong>
+              <div class="lival"></div>
+            </li>
+            <li class="list-group-item liconfirm"><strong>Order Value</strong>
+              <div class="lival"></div>
+            </li>
+            <li class="list-group-item liconfirm"><strong>Order Cost</strong>
+              <div class="lival"></div>
+            </li>
+            <li class="list-group-item liconfirm list-group-item-warning" style="color: black;">
+              <strong>Liquidation</strong>
+              <div class="lival" style="font-weight: bold; color: black;"></div>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-warning" id="placeorder"><strong>Place Order</strong></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+
+

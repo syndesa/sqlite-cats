@@ -1,0 +1,71 @@
+<!-- Home page / Login page View -->
+
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="home-page">
+        <div class="typed">
+            <h1>Practice <span style="color:#00d8ff" class="auto-type"></span></h1>
+        </div>
+
+        <div class="loginhome">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group" style="margin-bottom: 0;">
+    
+                    <div class="form-group emailg">
+                        <!-- {{form.email.label(class="form-control-label")}} -->
+    
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback" style="text-align: center;">
+                                {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.email(class="form-control form-control-lg")}}
+                        {% endif %}
+                    </div>
+    
+                    <div class="form-group passwordg">    
+                        {% if form.password.errors %}
+                            {{ form.password(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback" style="text-align: center;">
+                                {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.password(class="form-control form-control-lg")}}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="signin">
+                    <div class="form-group submitbtn">
+                        {{form.submit(class="btn btn-outline-info")}}
+                    </div>
+                    <div class="helplinks">
+                        <small class="text-muted">
+                            <a style="color:#00d8ff;" class="ml-2" href="{{ url_for('register')}}"> Sign Up Now</a> 
+                        </small>
+                        <small class="text-muted ml-2">
+                            <a style="color: #00d8ff;" href="#">Forgot Password?</a>
+                        </small>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+        var typed = new Typed('.auto-type', {
+            strings: ['^500Trading.^1500', '^200New Strategies.^1500', '^200Risk Free.^1500',  '^200Today.^1500'],
+            typeSpeed: 125,
+            backSpeed: 60,
+            loop: true
+        })
+    </script>
+{% endblock body %}
+

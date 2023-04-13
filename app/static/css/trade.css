@@ -1,0 +1,122 @@
+.tradecontainer {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 12vh;
+    height: 40vh;
+    width: 80vw;  
+    display: grid;
+    grid-template-columns: 1.5fr 0.37fr;
+    grid-template-rows: .2fr 4fr 1fr;
+    grid-auto-columns: 1fr;
+    grid-auto-rows: 1fr;
+    gap: 8px 8px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "timeframe symbols"
+      "chart leverage"
+      "position position";
+  }
+  
+.Long {
+  color:rgb(7, 146, 25)
+}
+
+.Short {
+  color: rgb(158, 8, 8);
+}
+
+.posOpen {
+  color:rgba(12, 201, 223, 1);
+  font-weight: bold;
+}
+
+.posLiq {
+  color: rgba(255, 193, 7, 1);
+  font-weight: bold;
+}
+
+.posID {
+  font-weight: bold;
+}
+
+.timeframe {
+  align-self: flex-end;
+  justify-self: stretch;
+  background-color: transparent; 
+  grid-area: timeframe; 
+
+}
+
+.timeframe>[class^="btn-group"]{
+  width: 100%;
+}
+
+.tradecontainer>*{
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.chart {
+  position: relative; 
+  grid-area: chart; 
+  display: grid;
+}
+
+#loading{
+  display: none;
+  z-index: 4;
+  position: absolute;
+  align-self: center;
+  justify-self: center;
+}
+
+
+.leverage {
+  grid-area: leverage; 
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-areas: 
+  "userassets"
+  "ordertype";
+  row-gap: 8px;
+}
+
+
+
+.leverage>.ordertype{
+  height: 100%;
+  grid-area: "ordertype";
+  align-self: flex-start;
+  justify-self: stretch;
+}
+
+.position { 
+  grid-area: position; 
+
+}
+
+
+.ordervalue, .ordercost{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.ordervalue>.ov, .ordercost>.oc{
+  justify-self: flex-start;
+}
+
+.ordervalue>.val, .ordercost>.val{
+  justify-self: flex-end;
+}
+
+
+.exec{
+  display: grid;
+  justify-items: stretch;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 5px;
+}
+
+.liconfirm{ 
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

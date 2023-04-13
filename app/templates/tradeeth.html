@@ -1,0 +1,74 @@
+<!-- Ethereum Trading UI View (Extends Trade Template) -->
+
+{% extends 'trade.html' %}
+
+{% block tf %}
+    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="timeframe">
+        <label class="btn btn-secondary " name="1m">
+        <input type="radio" name="options" id="option1" autocomplete="off" value="1m"> 1 minute
+        </label>
+        <label class="btn btn-secondary active" name="15m">
+        <input type="radio" name="options" id="option2" autocomplete="off" value="15m" checked> 15 minutes
+        </label>
+        <label class="btn btn-secondary" name="1h">
+        <input type="radio" name="options" id="option3" autocomplete="off" value="1h"> 1 hour
+        </label>
+        <label class="btn btn-secondary" name="1d">
+            <input type="radio" name="options" id="option4" autocomplete="off" value="1d"> 1 day
+        </label>
+    </div>
+{% endblock tf %}
+
+
+
+{% block chartlegend %}<img src="{{ url_for('static', filename='images/ethlogo.png')}}" alt="BTC/USDT" height="20vh"> Ethereum/Tether (15m){% endblock chartlegend %}
+
+
+{% block changeassets %}
+    <a href="{{url_for('tradebtc')}}"><button type="button" class="btn btn-warning" style="width: 100%;"><strong>Trade Bitcoin</strong> <img src="{{ url_for('static', filename='images/btclogo.png')}}" alt="BTC/USDT" height="20vh" style="vertical-align: middle;"></button></a>
+{% endblock changeassets %}
+
+{% block tradingpair %}
+    Ethereum/Tether
+{% endblock tradingpair %}
+
+
+{% block activepositions %}
+
+    {% if actives %}
+        {% for active in actives %}
+            <tr style="font-size: .9rem;" id="{{active.id}}" class="trposition" name="{{active.status}}">
+                <th style="padding-left: 16px;" scope="row" class="{{active.direction}}">{{active.contract}} ({{active.direction}} {{active.leverage}}x)</th>
+                <td class="posID">#{{active.id}}</td>
+                <td>{{active.qty}}</td>
+                <td>{{active.value}}</td>
+                <td class="posOpen">{{active.open}}</td>
+                <td class="posLiq">{{active.liq}}</td>
+                <td name="{{active.direction}}" value="{{active.leverage}}">-</td>
+                <td style="border-top:0px"><a onclick="closeTrade(this)" href="#" class="tooltips tt{{active.id}}"><img class="closebtn" style="height:1.25em; padding-left:5px"  src="../static/images/svgclosebtn.svg" alt=""></a></td>
+            </tr>
+        {% endfor %}
+
+    {% endif %}
+
+{% endblock activepositions %}
+
+{% block pendingpositions %}
+
+    {% if pendings %}
+        {% for pending in pendings %}
+        <tr style="font-size: .9rem;" id="{{pending.id}}" class="trposition" name="{{pending.status}}">
+            <th style="padding-left: 16px;" scope="row" class="{{pending.direction}}">{{pending.contract}} ({{pending.direction}} {{pending.leverage}}x)</th>
+            <td class="posID">#{{pending.id}}</td>
+            <td>{{pending.qty}}</td>
+            <td>{{pending.value}}</td>
+            <td class="posOpen">{{pending.open}}</td>
+            <td class="posLiq">{{pending.liq}}</td>
+            <td name="{{pending.direction}}" value="{{pending.leverage}}">-</td>
+            <td style="border-top:0px"><a onclick="closeTrade(this)" href="#" class="tooltips tt{{pending.id}}"><img class="closebtn" style="height:1.25em; padding-left:5px"  src="../static/images/svgclosebtn.svg" alt=""></a></td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+
+{% endblock pendingpositions %}
+
